@@ -22,7 +22,12 @@ public class TestKeywords {
    //String update='';
    //String as='';
    //String using='';
-
+   String scope='';
+   String view='';
+   String reference='';
+   String tracking='';
+   String viewstat='';
+   
    //String abstract='';
    //String boolean ='';
    //String break ='';

@@ -44,6 +44,10 @@ public class TestSOQL {
         List<SObject> var62 = [SELECT Id FROM Account OFFSET 1];
         List<SObject> var63 = [SELECT Id FROM Account OFFSET :varInteger];
         List<SObject> var64 = [SELECT Id FROM Account FOR UPDATE];
+        List<SObject> var65 = [SELECT Id FROM KnowledgeArticle UPDATE TRACKING];
+        List<SObject> var66 = [SELECT Id FROM KnowledgeArticle UPDATE VIEWSTAT];
+        List<SObject> var67 = [SELECT Id FROM Account FOR VIEW];
+        List<SObject> var68 = [SELECT Id FROM Account FOR REFERENCE];
 
         Integer var70 = [SELECT COUNT() FROM Account];
         List<AggregateResult> var71 = [SELECT COUNT(Id) FROM Account];
@@ -54,6 +58,9 @@ public class TestSOQL {
         List<AggregateResult> var76 = [SELECT COUNT(Id), Name n FROM Account GROUP BY Name];
         List<AggregateResult> var77 = [SELECT COUNT(Id), Name, ParentId FROM Account GROUP BY Name, ParentId];
         List<AggregateResult> var78 = [SELECT COUNT(Id), Name FROM Account GROUP BY Name HAVING COUNT(Id) = 0];
+
+        List<SObject> var80 = [SELECT Id FROM Account USING SCOPE mine];
+        List<SObject> var81 = [SELECT Id FROM UserProfileFeed WITH Id=''];
     }
 
     public void testOperations() {

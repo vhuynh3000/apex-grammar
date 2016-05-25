@@ -22,6 +22,11 @@ public class testkeywords_lowercase {
    //string update='';
    //string as='';
    //string using='';
+   string scope='';
+   string view='';
+   string reference='';
+   string tracking='';
+   string viewstat='';
 
    //string abstract='';
    //string boolean ='';

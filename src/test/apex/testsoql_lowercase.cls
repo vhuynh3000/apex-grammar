@@ -44,6 +44,10 @@ public class testsoql_lowercase {
         list<sobject> var62 = [select id from account offset 1];
         list<sobject> var63 = [select id from account offset :varinteger];
         list<sobject> var64 = [select id from account for update];
+        list<sobject> var65 = [select id from knowledgearticle update tracking];
+        list<sobject> var66 = [select id from knowledgearticle update viewstat];
+        list<sobject> var67 = [select id from account for view];
+        list<sobject> var68 = [select id from account for reference];
 
         integer var70 = [select count() from account];
         list<aggregateresult> var71 = [select count(id) from account];
@@ -54,6 +58,9 @@ public class testsoql_lowercase {
         list<aggregateresult> var76 = [select count(id), name n from account group by name];
         list<aggregateresult> var77 = [select count(id), name, parentid from account group by name, parentid];
         list<aggregateresult> var78 = [select count(id), name from account group by name having count(id) = 0];
+
+        list<sobject> var80 = [select id from account using scope mine];
+        list<sobject> var81 = [select id from userprofilefeed with id=''];
     }
 
     public void testoperations() {

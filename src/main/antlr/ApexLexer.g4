@@ -19,7 +19,12 @@ NOT    : N O T ;
 LIKE   : L I K E ;
 IN     : I N ;
 AS     : A S ;
-FOR_UPDATE : F O R ' '+ U P D A T E ;
+USING  : U S I N G ;
+FOR_UPDATE    : F O R ' '+ U P D A T E ;
+FOR_VIEW      : F O R ' '+ V I E W ;
+FOR_REFERENCE : F O R ' '+ R E F E R E N C E ;
+UPDATE_TRACKING : U P D A T E ' '+ T R A C K I N G ;
+UPDATE_VIEWSTAT : U P D A T E ' '+ V I E W S T A T ;
 
 //TODO: NULLS is a keyword but first and last are not
 NULLS_FIRST  : N U L L S ' '+ F I R S T;

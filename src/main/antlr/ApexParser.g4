@@ -579,7 +579,7 @@ soql
     ;
 
 soqlStatement
-    : SELECT soqlSelectClause FROM soqlObject (AS? soqlAlias)? (soqlWhereClause)? (soqlGroupByClause (soqlHavingClause)?)? (soqlOrderByClause)? (soqlLimitClause)? (soqlOffsetClause)? (soqlForUpdate)?
+    : SELECT soqlSelectClause FROM soqlObject (AS? soqlAlias)? (soqlUsingClause)? (soqlWhereClause)? (soqlWithClause)? (soqlGroupByClause (soqlHavingClause)?)? (soqlOrderByClause)? (soqlLimitClause)? (soqlOffsetClause)? (soqlQueryModifier)?
     ;
 
 soqlSelectClause
@@ -600,8 +600,16 @@ soqlSelectSubQuery
     : SELECT soqlSelectClause FROM soqlObject (AS? soqlAlias)? (soqlWhereClause)? (soqlLimitClause (soqlOffsetClause)?)? (soqlOrderByClause)?
     ;
 
+soqlUsingClause
+    : USING soqlScopeToken Identifier
+    ;
+
 soqlWhereClause
     : WHERE soqlConditions
+    ;
+
+soqlWithClause
+    : soqlWithToken soqlConditions
     ;
 
 soqlConditions
@@ -661,9 +669,19 @@ soqlLimitClause
     : soqlLimitToken soqlValue
     ;
 
+//the token 'SCOPE' is not a keyword
+soqlScopeToken
+    : {(_input.LT(1).getText().toLowerCase().matches("(scope)"))}? Identifier
+    ;
+
 //the token 'LIMIT' is not a keyword
 soqlLimitToken
     : {(_input.LT(1).getText().toLowerCase().matches("(limit)"))}? Identifier
+    ;
+
+//the token 'WITH' is not a keyword
+soqlWithToken
+    : {(_input.LT(1).getText().toLowerCase().matches("(with)"))}? Identifier
     ;
 
 soqlOffsetClause
@@ -675,8 +693,12 @@ soqlOffsetToken
     : {(_input.LT(1).getText().toLowerCase().matches("(offset)"))}? Identifier
     ;
 
-soqlForUpdate
+soqlQueryModifier
     : FOR_UPDATE
+    | FOR_VIEW
+    | FOR_REFERENCE
+    | UPDATE_TRACKING
+    | UPDATE_VIEWSTAT
     ;
 
 soqlOperator
