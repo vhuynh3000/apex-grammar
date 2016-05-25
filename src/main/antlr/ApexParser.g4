@@ -40,7 +40,7 @@ options { tokenVocab = ApexLexer; }
 
 }
 
-// starting point for parsing a java file
+// starting point for parsing an apex class file
 compilationUnit
     :   typeDeclaration* EOF
     ;
@@ -89,10 +89,14 @@ transientModifier
     ;
 
 classDeclaration
-    :   CLASS Identifier typeParameters?
+    :   CLASS classIdentifier typeParameters?
         (EXTENDS type)?
         (IMPLEMENTS typeList)?
         classBody
+    ;
+
+classIdentifier
+    :   Identifier
     ;
 
 typeParameters
@@ -104,7 +108,11 @@ typeParameter
     ;
 
 enumDeclaration
-    :   ENUM Identifier '{' enumConstants? '}'
+    :   ENUM enumIdentifier '{' enumConstants? '}'
+    ;
+
+enumIdentifier
+    :   Identifier
     ;
 
 enumConstants
@@ -116,7 +124,7 @@ enumConstant
     ;
 
 interfaceDeclaration
-    :   INTERFACE Identifier typeParameters? (EXTENDS typeList)? interfaceBody
+    :   INTERFACE classIdentifier typeParameters? (EXTENDS typeList)? interfaceBody
     ;
 
 typeList
@@ -148,16 +156,24 @@ memberDeclaration
     ;
 
 methodDeclaration
-    :   (OVERRIDE)? (type|VOID) Identifier formalParameters
+    :   (OVERRIDE)? (type|VOID) methodIdentifier formalParameters
         (throwsDeclaration)?
         (   methodBody
         |   ';'
         )
     ;
 
+methodIdentifier
+    :   Identifier
+    ;
+
 constructorDeclaration
-    :   Identifier formalParameters (throwsDeclaration)?
+    :   constructorIdentifier formalParameters (throwsDeclaration)?
         constructorBody
+    ;
+
+constructorIdentifier
+    :   Identifier
     ;
 
 throwsDeclaration
@@ -194,11 +210,15 @@ constDeclaration
     ;
 
 constantDeclarator
-    :   Identifier '=' variableInitializer
+    :   constantIdentifier '=' variableInitializer
+    ;
+
+constantIdentifier
+    :   Identifier
     ;
 
 interfaceMethodDeclaration
-    :   (type|VOID) Identifier formalParameters
+    :   (type|VOID) methodIdentifier formalParameters
         (throwsDeclaration)?
         ';'
     ;
@@ -246,7 +266,7 @@ type
     ;
 
 classOrInterfaceType
-    :   Identifier typeArguments? ('.' Identifier typeArguments? )*
+    :   classIdentifier typeArguments? ('.' classIdentifier typeArguments? )*
     ;
 
 primitiveType
@@ -356,21 +376,20 @@ statement
     |   IF parExpression statement (ELSE statement)?
     |   FOR '(' forControl ')' statement
     |   WHILE parExpression statement
-    |   DO statement WHILE parExpression ';'
+    |   DO block WHILE parExpression ';'
     |   TRY block (catchClause+ finallyBlock? | finallyBlock)
     |   RETURN expression? ';'
     |   THROW expression ';'
-    |   BREAK Identifier? ';'
-    |   CONTINUE Identifier? ';'
+    |   BREAK ';'
+    |   CONTINUE ';'
     |   expression '(' expression ')' statement //TODO: the first expression should be limited to function calls
     |   ';'
     |   dmlStatement ';'
     |   statementExpression ';'
-    |   Identifier ':' statement
     ;
 
 catchClause
-    :   CATCH '(' variableModifier* catchType Identifier ')' block
+    :   CATCH '(' variableModifier* catchType variableDeclaratorId ')' block
     ;
 
 catchType
@@ -433,7 +452,7 @@ constantExpression
 expression
     :   primary
     |   '[' soql ']'
-    |   expression '.' Identifier
+    |   expression '.' expressionIdentifier
     |   expression '.' THIS
     |   hackTriggerNew
     |   hackDatabaseDMLOperation
@@ -481,10 +500,14 @@ primary
     |   THIS
     |   SUPER
     |   literal
-    |   Identifier
+    |   expressionIdentifier
     |   type '.' CLASS
     |   VOID '.' CLASS
     |   nonWildcardTypeArguments (explicitGenericInvocationSuffix | THIS arguments)
+    ;
+
+expressionIdentifier
+    :   Identifier
     ;
 
 hackTriggerNew
@@ -509,12 +532,12 @@ creator
     ;
 
 createdName
-    :   Identifier typeArgumentsOrDiamond? ('.' Identifier typeArgumentsOrDiamond?)*
+    :   classIdentifier typeArgumentsOrDiamond? ('.' classIdentifier typeArgumentsOrDiamond?)*
     |   primitiveType
     ;
 
 innerCreator
-    :   Identifier nonWildcardTypeArgumentsOrDiamond? classCreatorRest
+    :   classIdentifier nonWildcardTypeArgumentsOrDiamond? classCreatorRest
     ;
 
 arrayCreatorRest
@@ -560,12 +583,12 @@ nonWildcardTypeArgumentsOrDiamond
 
 superSuffix
     :   arguments
-    |   '.' Identifier arguments?
+    |   '.' methodIdentifier arguments?
     ;
 
 explicitGenericInvocationSuffix
     :   SUPER superSuffix
-    |   Identifier arguments
+    |   methodIdentifier arguments
     ;
 
 arguments
