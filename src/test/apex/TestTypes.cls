@@ -68,4 +68,15 @@ public class TestTypes {
     public String prop16 {public set;}
     public String prop17 {public get {return null;} public set;}
     public String prop18 {public set; public get {return null;}}
+    
+    public interface interface01 {}
+    private interface interface02 {}
+    interface interface03 {}
+
+    public class class01 {}
+    private class class02 {}
+    class class03 {}
+    private with sharing class class04 {}
+    private without sharing class class05 {}
+    public class class06 implements interface01, interface02 {}
 }

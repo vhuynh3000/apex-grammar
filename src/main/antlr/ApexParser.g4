@@ -46,8 +46,8 @@ compilationUnit
     ;
 
 typeDeclaration
-    :   classOrInterfaceModifier* classDeclaration
-    |   classOrInterfaceModifier* interfaceDeclaration
+    :   classDeclaration
+    |   interfaceDeclaration
     |   ';'
     ;
 
@@ -89,7 +89,7 @@ transientModifier
     ;
 
 classDeclaration
-    :   CLASS classIdentifier typeParameters?
+    :   classOrInterfaceModifier* CLASS classIdentifier typeParameters?
         (EXTENDS type)?
         (IMPLEMENTS typeList)?
         classBody
@@ -108,7 +108,7 @@ typeParameter
     ;
 
 enumDeclaration
-    :   ENUM enumIdentifier '{' enumConstants? '}'
+    :   modifier* ENUM enumIdentifier '{' enumConstants? '}'
     ;
 
 enumIdentifier
@@ -124,7 +124,7 @@ enumConstant
     ;
 
 interfaceDeclaration
-    :   INTERFACE classIdentifier typeParameters? (EXTENDS typeList)? interfaceBody
+    :   classOrInterfaceModifier* INTERFACE classIdentifier typeParameters? (EXTENDS typeList)? interfaceBody
     ;
 
 typeList
@@ -142,7 +142,7 @@ interfaceBody
 classBodyDeclaration
     :   ';'
     |   STATIC? block
-    |   modifier* memberDeclaration
+    |   memberDeclaration
     ;
 
 memberDeclaration
@@ -156,7 +156,7 @@ memberDeclaration
     ;
 
 methodDeclaration
-    :   (OVERRIDE)? (type|VOID) methodIdentifier formalParameters
+    :   modifier* (OVERRIDE)? (type|VOID) methodIdentifier formalParameters
         (throwsDeclaration)?
         (   methodBody
         |   ';'
@@ -168,7 +168,7 @@ methodIdentifier
     ;
 
 constructorDeclaration
-    :   constructorIdentifier formalParameters (throwsDeclaration)?
+    :   modifier* constructorIdentifier formalParameters (throwsDeclaration)?
         constructorBody
     ;
 
@@ -185,15 +185,15 @@ throwsToken
     ;
 
 fieldDeclaration
-    :   type variableDeclarators ';'
+    :   modifier* type variableDeclarators ';'
     ;
 
 propertyDeclaration
-    :   type propertyDeclarator
+    :   modifier* type propertyDeclarator
     ;
 
 interfaceBodyDeclaration
-    :   modifier* interfaceMemberDeclaration
+    :   interfaceMemberDeclaration
     |   ';'
     ;
 
@@ -206,7 +206,7 @@ interfaceMemberDeclaration
     ;
 
 constDeclaration
-    :   type constantDeclarator (',' constantDeclarator)* ';'
+    :   modifier* type constantDeclarator (',' constantDeclarator)* ';'
     ;
 
 constantDeclarator
@@ -218,7 +218,7 @@ constantIdentifier
     ;
 
 interfaceMethodDeclaration
-    :   (type|VOID) methodIdentifier formalParameters
+    :   modifier* (type|VOID) methodIdentifier formalParameters
         (throwsDeclaration)?
         ';'
     ;
